@@ -1,10 +1,20 @@
 #include <iostream>
-#include <vector>
+#include <fstream> 
 #include <string>
 
 using namespace std;
 
 int main()
 {
-    cout << "day1" << endl;
+    std::ifstream infile("input.txt");
+
+    int a, b;
+
+    while (infile >> a >> b)
+    {
+        std::cout << a << " " << b << std::endl;
+    }
+
+    infile.close(); 
+    return 0;
 }
