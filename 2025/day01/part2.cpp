@@ -17,9 +17,9 @@ int main()
 
     int password = 0;
 
-    while (std::getline(infile, line)) {
+    while (getline(infile, line)) {
         direction = line[0];
-        amount = std::stoi(line.substr(1));
+        amount = stoi(line.substr(1));
 
         int fullRotations = (amount / 100);
         int restRotation = (amount % 100);
