@@ -6,15 +6,40 @@ using namespace std;
 
 int main()
 {
-    std::ifstream infile("input.txt");
+    ifstream infile("input.txt");
+    if (!infile) return 1;
 
-    int a, b;
+    int dial = 50;
 
-    while (infile >> a >> b)
-    {
-        std::cout << a << " " << b << std::endl;
+    string line;
+    char direction; 
+    int amount;
+
+    int password = 0;
+
+    while (std::getline(infile, line)) {
+        direction = line[0];
+        amount = std::stoi(line.substr(1));
+        
+        if(direction == 'L'){
+            dial -= (amount % 100);
+        }
+        else{
+            dial += (amount % 100);
+        }
+        
+        if (dial < 0){
+            dial = 100 + dial;
+        }
+        if (dial >= 100){
+            dial -= 100;
+        }
+        
+        if (dial == 0){
+            password++;
+        }
     }
+    cout << password << endl;
 
-    infile.close(); 
     return 0;
 }
