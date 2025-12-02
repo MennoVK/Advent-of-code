@@ -30,7 +30,7 @@ int main()
             num1 = stoll(input.substr(currentIdx, i));
             currentIdx = i + 1;
         }
-        else if(input[i] == ','){
+        else if(input[i] == ',' || !input[i + 1]){
             num2 = stoll(input.substr(currentIdx, i));
             currentIdx = i + 1;
             
