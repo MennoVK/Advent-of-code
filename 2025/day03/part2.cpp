@@ -4,8 +4,6 @@
 
 using namespace std;
 
-long long calculateInvalidIDSumForRange(long long num1, long long num2);
-
 int main()
 {
     ifstream infile("input.txt");
@@ -16,40 +14,26 @@ int main()
     long long count = 0;
 
     while (getline(infile, line)) {
-        string strNum = "";
+        string strLine;
 
-        
-        for (int i = 12; i > 1; i--){
-            cout << strNum << endl;
+        for (int i = 0; i < line.length() - (line.length() - 12 ); i++){
             int largestNum = 0;
-            int largestNumIdx;
+            int largestNumIdx = 0;
 
-            for (int j = 0; j < line.length(); j++){
-                if(j < line.length() - i){
-                    if (line[j] - '0' > largestNum){
-                        largestNum = line[j] - '0';
-                        largestNumIdx = j;
-                    }
+            for (int j = i; j < line.length() - 12 + 1 + i; j++){
+                if (line[j] - '0' > largestNum || line[j] == '0'){
+                    largestNum = line[j] - '0';
+                    largestNumIdx = j;
                 }
             }
-            strNum += to_string(largestNum);
+            strLine += to_string(largestNum);
+            line[largestNumIdx] = '0';
+            largestNum = 0;
 
-            line = line.erase(0, largestNumIdx + 1);
-
-            if( largestNumIdx == 0){
-            }
-            else{
-                i -= largestNumIdx - 1;
-            }
         }
-
-
-        strNum += line.substr(line.length() - (12 - strNum.length()));
-        
-        cout << strNum << endl;
-
-        count += stoll(strNum);
+        count += stoll(strLine);
     }
+
     cout << count << endl;
 
     return 0;
