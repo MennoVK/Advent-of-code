@@ -24,24 +24,24 @@ struct Point3D {
 };
 struct distanceBetween { Point3D p1,p2; double distance;};
 bool compareByDistance(const distanceBetween &a, const distanceBetween &b);
-void mergeSets(std::vector<std::set<Point3D>>& v, size_t i, size_t j);
-void eraseSet(std::vector<std::set<Point3D>>& v, size_t index);
+void mergeSets(vector<set<Point3D>>& v, size_t i, size_t j);
+void eraseSet(vector<set<Point3D>>& v, size_t index);
 
 double calculateDistance(Point3D, Point3D);
 
-void logTest(const std::vector<std::set<Point3D>>& test) {
-    std::cout << "test size: " << test.size() << "\n";
+void logTest(const vector<set<Point3D>>& test) {
+    cout << "test size: " << test.size() << "\n";
 
     for (size_t i = 0; i < test.size(); i++) {
-        std::cout << "  [" << i << "] length: " << test[i].size() << " -> [";
+        cout << "  [" << i << "] length: " << test[i].size() << " -> [";
 
         size_t count = 0;
         for (const auto& p : test[i]) {
             cout << "(" << p.x << "," << p.y << "," << p.z << ")";
-            if (++count < test[i].size()) std::cout << ", ";
+            if (++count < test[i].size()) cout << ", ";
         }
 
-        std::cout << "]\n";
+        cout << "]\n";
     }
 }
 
@@ -125,7 +125,7 @@ int main()
         largestNumbers.push_back(test[i].size());
     }
 
-    sort(largestNumbers.begin(), largestNumbers.end(), std::greater<int>());
+    sort(largestNumbers.begin(), largestNumbers.end(), greater<int>());
 
     cout << globalCount * largestNumbers[0] * largestNumbers[1] * largestNumbers[2] << endl;
 
@@ -145,10 +145,10 @@ bool compareByDistance(const distanceBetween &a, const distanceBetween &b)
     return a.distance < b.distance;
 }
 
-void mergeSets(std::vector<std::set<Point3D>>& v, size_t i, size_t j) {
+void mergeSets(vector<set<Point3D>>& v, size_t i, size_t j) {
     v[i].insert(v[j].begin(), v[j].end());
 }
 
-void eraseSet(std::vector<std::set<Point3D>>& v, size_t index) {
+void eraseSet(vector<set<Point3D>>& v, size_t index) {
     v.erase(v.begin() + index);
 }
