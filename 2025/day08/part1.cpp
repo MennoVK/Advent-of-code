@@ -24,6 +24,8 @@ struct Point3D {
 };
 struct distanceBetween { Point3D p1,p2; double distance;};
 bool compareByDistance(const distanceBetween &a, const distanceBetween &b);
+void mergeSets(std::vector<std::set<Point3D>>& v, size_t i, size_t j);
+void eraseSet(std::vector<std::set<Point3D>>& v, size_t index);
 
 double calculateDistance(Point3D, Point3D);
 
@@ -42,7 +44,6 @@ void logTest(const std::vector<std::set<Point3D>>& test) {
         std::cout << "]\n";
     }
 }
-
 
 int main()
 {
@@ -66,12 +67,6 @@ int main()
 
     for (int i = 0; i < pts.size(); i++){
         for (int j = i + 1; j < pts.size(); j++){
-            cout << "distance between ";
-            cout << pts[i].x << " " << pts[i].y << " " << pts[i].z;
-            cout << " and ";
-            cout << pts[j].x << " " << pts[j].y << " " << pts[j].z;
-            cout << " is ";
-            cout << calculateDistance(pts[j], pts[i]) << endl;
             list.push_back({pts[i], pts[j], calculateDistance(pts[j], pts[i])});
         }
     }
@@ -80,36 +75,34 @@ int main()
 
     vector<set<Point3D>> test;
     
-    // create base list which contains lists of Point3D
-    // check if base list contains list which contains Point3D that is about to be inserted.
-    // if Point3D exists, append other value to list
-    // otherwise create new list with 2 points with smallest distance
-    // cout << list.size() << endl;
-
     for (int i = 0; i < list.size(); i++){
-
-
-        //loop over all distanceBetween entries (189)
         bool addedA = false;
         bool addedB = false;
-        
+        int index;
 
         for (int j = 0; j < test.size(); j++){
-            // loop through main list
             for (const auto& p : test[j]) {
                 if (p == list[i].p1) {
-                    test[j].insert(list[i].p2);
-                    // cout << "hit" << endl;
-
-                    // cout << list[i].p2.x << "," << list[i].p2.y << "," << list[i].p2.z << endl;
-                    addedB = true;
+                    if(addedA){
+                        mergeSets(test, j, index);
+                        eraseSet(test, index);
+                    }
+                    else{
+                        test[j].insert(list[i].p2);
+                        addedB = true;
+                        index = j;
+                    }
                     break;
                 }
                 if (p == list[i].p2) {
-                    test[j].insert(list[i].p1);
-                    // cout << "hit" << endl;
-                    // cout << list[i].p1.x << "," << list[i].p1.y << "," << list[i].p1.z << endl;
-                    addedA = true;
+                    if(addedB){
+                        mergeSets(test, j, index);
+                        eraseSet(test, index);
+                    }else{
+                        test[j].insert(list[i].p1);
+                        addedA = true;
+                        index = j;
+                    }
                     break;
                 }
             }
@@ -117,16 +110,24 @@ int main()
 
         if(!addedA && !addedB){
             test.push_back({list[i].p1, list[i].p2});
-            // push vector of 2 points to main vector
         }
 
-        logTest(test);
-
-        if (i == 10){
+        if (i == 999){
             break;
         }
     }
+    
+    int globalCount = 1;
 
+    vector<int> largestNumbers; 
+
+    for (int i = 0; i < test.size(); i++){
+        largestNumbers.push_back(test[i].size());
+    }
+
+    sort(largestNumbers.begin(), largestNumbers.end(), std::greater<int>());
+
+    cout << globalCount * largestNumbers[0] * largestNumbers[1] * largestNumbers[2] << endl;
 
     return 0;
 }
@@ -142,4 +143,12 @@ double calculateDistance (Point3D pointA, Point3D pointB){
 bool compareByDistance(const distanceBetween &a, const distanceBetween &b)
 {
     return a.distance < b.distance;
+}
+
+void mergeSets(std::vector<std::set<Point3D>>& v, size_t i, size_t j) {
+    v[i].insert(v[j].begin(), v[j].end());
+}
+
+void eraseSet(std::vector<std::set<Point3D>>& v, size_t index) {
+    v.erase(v.begin() + index);
 }
