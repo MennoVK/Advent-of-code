@@ -58,21 +58,6 @@ int main()
             }
         }
 
-
-        // for (int i = 0; i < input.size(); i++){
-        //     cout << input[i];
-        // }
-
-        // cout << endl;
-
-        // for (int i = 0; i < buttons.size(); i++){
-        //     for (int j = 0; j < buttons[i].size(); j++){
-        //         cout << buttons[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-
-
         vector<int> current;
         
         for (int r = 1; r <= buttons.size(); ++r) {
@@ -83,7 +68,6 @@ int main()
 
             int operations = combineNested(buttons, current, 0, r, &result, input);
             if (operations > 0) {
-                // cout << "Found a solution: " << operations << endl;
                 globalCount += operations;
                 break;
             }
@@ -96,8 +80,6 @@ int main()
 }
 
 bool compareVectors(vector<char> vec1, vector<char> vec2) {
-    // cout << vec1[0] << vec1[1] << vec1[2] << vec1[3]  << " " << vec2[0] << vec2[1] << vec2[2] << vec2[3]  << endl;
-    
     return vec1 == vec2;
 }
 
@@ -111,18 +93,14 @@ int combineNested(const vector<vector<int>>& items, vector<int>& current, int st
     int operations = 0;
 
     if (current.size() == r) {
-        // cout << "Combination values: { ";
         for (int idx : current) {
             operations++;
-            // for (int val : items[idx]) cout << val << " ";
         }
-        // cout << "}" << endl;
         
         vector<char> temp = *result;
         for (int idx : current) {
             updateResult(items[idx], &temp, input);
             if(compareVectors(input, temp)){
-                // cout << "operations: " << operations << endl;
                 return operations;
             };
         }
